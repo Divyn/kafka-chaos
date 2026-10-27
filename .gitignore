@@ -1,0 +1,5 @@
+producer.log
+consumer.log
+lag.log
+.venv/
+__pycache__/

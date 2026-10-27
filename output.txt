@@ -1,0 +1,28 @@
+One machine, one run. Instance: 2 vCPU, 3916 MB of memory, 75 GB of disk,
+Debian 13.7, Linux 6.12.113, Docker 26.1.5, Docker Compose 2.26.1, Kafka 3.9.0.
+
+Three brokers in Docker Compose. Topic: 3 partitions, replication factor 3,
+min.insync.replicas 2. Producer: acks=all, idempotence on, 8000 events at
+20 ms apart. Consumer: one group, one member.
+
+$ python3 chaos.py 3 12
+round  killed        stall  new leader  errors  partitions
+1      kafka-3          6.57 s        7.9 s       0      1
+2      kafka-1          6.18 s        8.6 s       0      2
+3      kafka-3          6.00 s        8.1 s       0      1
+
+$ python3 check.py
+acknowledged 7201, received 7201, never arrived 0
+
+Two brokers killed, the producer still sending:
+
+$ grep -c ",error," producer.log
+245
+
+$ grep -m1 ",error," producer.log | cut -d, -f3-
+KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+
+One column was dropped after this run. An earlier version of chaos.py timed
+the broker coming back up, but it polled the container's running state, which
+is true before the broker is serving, so it printed 0.0 s. It is not in the
+output above.
