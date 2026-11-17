@@ -1,0 +1,2 @@
+# Docker version 26.1.5+dfsg1, build a72d7cd, Docker Compose version 2.26.1-4, kafka image apache/kafka:3.9.0, Version: 2.16.1, Python 3.13.5, disk /dev/vda2        75G   12G   60G  17% /
+model name	: Intel Xeon Processor (Skylake, IBRS)

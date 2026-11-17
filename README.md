@@ -138,6 +138,11 @@ KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
 
 **Two of three controllers is still a majority, one is not.** Kill two brokers in this cluster and the remaining one cannot elect leaders or accept metadata changes. That is why writes stop rather than move to the last broker.
 
+## More consumers or more threads
+
+`scaling/` times 6 consumer setups on the same 50,000 events with a slow handler. See
+[`scaling/README.md`](scaling/README.md).
+
 ## Use it on your own cluster
 
 1. Change `BOOTSTRAP` in all three Python files to your brokers.
@@ -155,3 +160,4 @@ KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
 | `chaos.py` | Kills a broker and measures the stall and the leader change |
 | `check.py` | Compares what was acknowledged with what was received |
 | `output.txt` | Real output from the run shown here |
+| `scaling/` | More consumers or more threads: 6 setups timed |
